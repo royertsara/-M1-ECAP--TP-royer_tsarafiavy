@@ -13,10 +13,14 @@ server = app.server
 
 
 # -------------------------------- Data load -----------------------------------------------
-df = pd.read_csv("data.csv")
+df = pd.read_csv("data.csv",sep=',',encoding='utf-8')
+
 df.dropna(inplace=True)
+
 df['CustomerID'] = df['CustomerID'].astype(int)
+
 df['Transaction_Date'] = pd.to_datetime(df['Transaction_Date'])
+
 df['Total_prices'] = df['Avg_Price'] * (1 - df['Discount_pct']/100)
 
 # CA unitaire
