@@ -6,6 +6,12 @@ import plotly.express as px
 import plotly.graph_objects as go
 import calendar
 
+#-------Initialise APP
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+server = app.server
+
+
 # -------------------------------- Data load -----------------------------------------------
 df = pd.read_csv("data.csv")
 df.dropna(inplace=True)
@@ -38,7 +44,6 @@ def indicateur_mois(df, mois):
     }
 
 # -------------------------------- Dash App ---------------------------------------------
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 app.layout = dbc.Container(
     fluid=True,
