@@ -13,18 +13,25 @@ server = app.server
 
 
 # -------------------------------- Data load -----------------------------------------------
-df = pd.read_csv("data.csv",sep=',',encoding='utf-8')
+df = pd.read_csv("data.csv", sep=",", encoding="utf-8")
 
+# On garde les colonnes qui nous intéressent
+df=df[['CustomerID', 'Gender', 'Location', 'Product_Category', 'Quantity', 'Avg_Price', 'Transaction_Date', 'Month', 'Discount_pct']]
+# Conversion des colonnes critiques
+df['CustomerID'] = pd.to_numeric(df['CustomerID'], errors='coerce')  # int
+df['Transaction_Date'] = pd.to_datetime(df['Transaction_Date'], errors='coerce')  # datetime
+df['Quantity'] = pd.to_numeric(df['Quantity'], errors='coerce')  # int
+df['Avg_Price'] = pd.to_numeric(df['Avg_Price'], errors='coerce')  # float
+df['Discount_pct'] = pd.to_numeric(df['Discount_pct'], errors='coerce')  # float
+df['Month'] = pd.to_numeric(df['Month'], errors='coerce')
+
+# Gestion des valeurs manquantes:
 df.dropna(inplace=True)
 
-df['CustomerID'] = df['CustomerID'].astype(int)
-
-df['Transaction_Date'] = pd.to_datetime(df['Transaction_Date'])
-
+# Colonnes dérivées
 df['Total_prices'] = df['Avg_Price'] * (1 - df['Discount_pct']/100)
-
-# CA unitaire
 df['CA'] = df['Quantity'] * df['Total_prices']
+
 
 # -------------------------------- Fonctions métiers-------------------------
 def frequence_meilleurs_ventes(df):
